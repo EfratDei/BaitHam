@@ -1,0 +1,80 @@
+{% extends "adopter/Base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <head>
+        <style>
+            h1 {
+                text-align: center;
+            }
+
+            p {
+                text-align: center;
+            }
+
+            div {
+                text-align: center;
+            }
+
+        </style>
+    </head>
+
+    {% if user.is_authenticated %}
+    <b>מחובר בתור {{user.username}}</b>
+    {% endif %}
+
+    <br>
+    <br>
+<body>
+<br>
+<h1 class="font-weight-bold text-center"> מאגר בעלי החיים שלנו </h1>
+
+        <br>
+
+        <form method="GET" >
+            <b>חיפוש מתקדם:</b>
+            <br>
+            {{ myfilter.form }}
+            <button class='btn btn-outline-dark' type="submit">חפש</button>
+        </form>
+
+    <div class="row"/>
+
+    <div>
+        {% if user.is_authenticated %}
+            <br>
+            <a role="button" href="{% url 'Animal:add_Animal' %} " class="btn btn-dark">הוסף בעל חיים למאגר</a>
+            <br>
+            <br>
+        {% endif %}
+    </div>
+    <br>
+    <br>
+    <br>
+
+
+    {% for animal in animals %}
+        <div class="col-lg-4 col-md-6">
+
+            <h5><b>{{ animal.name }}</b></h5>
+            <a href="{% url 'Animal:animal_detail' animal.id %}">
+                <img src={% if animal.image %}
+                    {{ animal.image.url }}
+                {% endif %}
+                             class="rounded" height=300 width=300></a>
+            <b><p>{{ animal.description }}</p></b>
+
+            <a role="button" href="{% url 'Animal:animal_detail' animal.id %}" class="btn btn-secondary">לפרטים מלאים
+                עליי</a>
+            <br>
+            <br>
+
+
+        </div>
+        </body>
+    {% endfor %}
+
+{% endblock %}

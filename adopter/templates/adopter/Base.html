@@ -1,0 +1,151 @@
+{% load static %}
+
+<!doctype html>
+<html lang="he" dir="rtl">
+
+<head>
+
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="{% static 'adopter/custom.css ' %}">
+
+<link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+
+<link rel="icon" type="image/png" href="{% static 'adopter/Logo.jpeg' %}">
+
+<title>בית חם</title>
+
+</head>
+
+
+
+<body>
+<nav id="topNav" class="navbar navbar-expand-md navbar-light">
+    <div class="container">
+
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <img src="{% static 'adopter/Logo.jpeg' %}" width="70" height="40" class="d-inline-block align-top"
+                 alt="BaitHam's Logo">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse text-center" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+
+                <li>
+                <a role="button" href="{% url 'Article:articles' %}" class="btn btn-info">מאמרים</a>
+                </li> &#160
+                <li>
+                    <a role="button" href="{% url 'forum:home' %}" class="btn btn-info">פורום</a>
+                </li>
+                &#160
+
+                <li>
+                    <a role="button" href="{% url 'Event:all_events' %}" class="btn btn-info">אירועים</a>
+                </li>
+                &#160
+                <li>
+                    <a role="button" href="{% url 'success_story:all_stories' %}" class="btn btn-info">סיפורי הצלחה</a>
+                </li>
+                &#160
+                <li>
+                    <a role="button" href="{% url 'Animal:all_animals' %}" class="btn btn-info">בעלי חיים</a>
+                </li>
+                &#160
+            {% if not user.is_authenticated %}
+                <li>
+                    <a role="button" href="{% url 'Donations:new' %}" class="btn btn-info">תרומות</a>
+                </li>
+                &#160
+            {% endif %}
+                <li>
+                    <a role="button" href="{% url 'reports' %}" class="btn btn-info">דו"חות</a>
+                </li>
+                &#160
+
+
+                {% if user.is_authenticated and not user.is_superuser %}
+                    <li>
+                        <a role="button" href="{% url 'volunteer:update' %}" class="btn btn-info">דיווח נוכחות</a>
+                    </li>&#160
+                    {% endif %}
+                {% if user.is_authenticated %}
+                    <li>
+                        <a role="button" href="{% url 'Taskboard:all_task' %}" class="btn btn-info">לוח מטלות</a>
+                    </li> &#160
+
+                    <li>
+                        <a role="button" href="{% url 'Stock:selectStock' %}" class="btn btn-info">עדכון מלאי</a>
+                    </li> &#160
+
+                    <li>
+                        <a role="button" href="{% url 'Report:all_reports' %}" class="btn btn-danger">דיווחים מהשטח</a>
+                    </li>&#160
+
+                    <li>
+                        <form class="logout-link" action="{% url 'volunteer:logoutuser' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-dark">התנתק</button>
+                        </form>
+                    </li> &#160
+
+                {% else %}
+
+                    <li>
+                        <a role="button" href="{% url 'contact_us' %}" class="btn btn-info">צור קשר</a>
+                    </li>&#160
+                    <li>
+                        <a role="button" href="{% url 'Report:createReport' %}" class="btn btn-danger">כפתור אדום</a>
+                    <li>&#160
+
+                    <li>
+                        <a role="button" href="{% url 'volunteer:loginuser' %}" class="btn btn-dark">התחבר</a>
+                    </li>&#160
+                {% endif %}
+
+                {% if user.is_authenticated and user.is_superuser %}
+                        <a role="button" href="{% url 'admin_page' %}" class="btn btn-secondary">ניהול</a>
+                    </li>&#160
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

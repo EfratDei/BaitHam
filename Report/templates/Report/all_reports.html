@@ -1,0 +1,59 @@
+{% extends "adopter/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+<html>
+<head>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        div {
+            text-align: center;
+        }
+    </style>
+</head>
+
+{% if user.is_authenticated %}
+    <b>מחובר בתור {{user.username}}</b>
+    {% endif %}
+    <br>
+    <br>
+
+<body>
+
+<h1 class="font-weight-bold text-center"> דיווחים אחרונים </h1>
+
+<h3 class="text-center mb-5"> משתמשים הוסיפו עד כה {{ reports.count }} דיווחים </h3>
+
+{% for report in reports %}
+<div class="row justify-content-center my-3">
+    <div class="col-md-10">
+        <h5 class="text-muted">{{ report.date|date:'d/m/Y'|upper }}</h5>
+        <h2>{{ report.name }}</h2>
+        <p>{{ report.text|striptags}}</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'Report:deleteReport' report.id %}" class="btn btn-dark">נאסף</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endfor %}
+
+    <br>
+    <br>
+    {% if user.is_authenticated %}
+    <a role="button" href="{% url 'Report:createReport' %}" class="btn btn-warning">להוספת דיווח נוסף</a>
+    {% endif %}
+    <br>
+    <br>
+{% endblock %}
